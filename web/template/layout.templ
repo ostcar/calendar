@@ -1,0 +1,22 @@
+package template
+
+templ layout() {
+	<!DOCTYPE html>
+	<html lang="de">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Calendar</title>
+			<link rel="icon" href="data:,"/>
+			<link
+ 				rel="stylesheet"
+ 				href="/style.css"
+			/>
+			<script src="/assets/htmx.js"></script>
+			<script src="/assets/hyperscript.js"></script>
+		</head>
+		<body>
+			{ children... }
+		</body>
+	</html>
+}
