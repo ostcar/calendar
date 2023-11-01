@@ -83,7 +83,18 @@ func (s server) handleHome(w http.ResponseWriter, r *http.Request) error {
 			return err
 		}
 	}
-	return template.Month(month).Render(r.Context(), w)
+
+	templ := template.Month
+
+	if isHTMX(r) {
+		templ = template.MonthPartly
+	}
+
+	return templ(month).Render(r.Context(), w)
+}
+
+func isHTMX(r *http.Request) bool {
+	return r.Header.Get("HX-Request") == "true"
 }
 
 func handleStatic() http.Handler {

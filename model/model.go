@@ -228,3 +228,8 @@ type Event struct {
 	Title    string
 	Subtitle string
 }
+
+// Time returns the start time of the event.
+func (e Event) Time() string {
+	return e.start.Format("15:04")
+}

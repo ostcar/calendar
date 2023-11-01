@@ -7,16 +7,20 @@ import (
 
 templ Month(month model.Month) {
 	@layout() {
-		<main>
-			@header(month)
-			<section class="month">
-				// TODO: Add Mo, Di, Mi ...
-				for _, w := range month.Weeks() {
-					@week(month, w)
-				}
-			</section>
-		</main>
+		@MonthPartly(month)
 	}
+}
+
+templ MonthPartly(month model.Month) {
+	<main>
+		@header(month)
+		<section class="month">
+			// TODO: Add Mo, Di, Mi ...
+			for _, w := range month.Weeks() {
+				@week(month, w)
+			}
+		</section>
+	</main>
 }
 
 templ week(month model.Month, week model.Week) {
@@ -32,19 +36,47 @@ templ day(month model.Month,day model.Day) {
 		<header>{ strconv.Itoa(day.Number()) }</header>
 		<section>
 			for _, e := range day.Events() {
-				<div>{ e.Title }</div>
+				@event(e)
 			}
 		</section>
 	</div>
+}
+
+templ event(e model.Event) {
+	<div><strong>{ e.Time() }</strong> { e.Title }</div>
 }
 
 templ header(month model.Month) {
 	<header>
 		<h1>{ month.Name() }</h1>
 		<div class="controls">
-			<a href="/">Heute</a>
-			<a href={ templ.SafeURL("/?month=" + month.Previous().Attr()) }>↩</a>
-			<a href={ templ.SafeURL("/?month=" + month.Next().Attr()) }>↪</a>
+			<a
+ 				href="/"
+ 				hx-get="/"
+ 				hx-target="main"
+ 				hx-swap="outerHTML"
+ 				hx-push-url="true"
+			>
+				Heute
+			</a>
+			<a
+ 				href={ templ.SafeURL("/?month=" + month.Previous().Attr()) }
+ 				hx-get={ "/?month=" + month.Previous().Attr() }
+ 				hx-target="main"
+ 				hx-swap="outerHTML"
+ 				hx-push-url="true"
+			>
+				↩
+			</a>
+			<a
+ 				href={ templ.SafeURL("/?month=" + month.Next().Attr()) }
+ 				hx-get={ "/?month=" + month.Next().Attr() }
+ 				hx-target="main"
+ 				hx-swap="outerHTML"
+ 				hx-push-url="true"
+			>
+				↪
+			</a>
 		</div>
 	</header>
 }
