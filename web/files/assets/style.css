@@ -68,3 +68,9 @@ main>header {
         }
     }
 }
+
+body>footer {
+    position: absolute;
+    bottom: 0;
+
+}
