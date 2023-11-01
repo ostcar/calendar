@@ -4,13 +4,13 @@
     flex-basis: 0;
 
     max-width: 120px;
-
-
     padding: 5px;
+    background-color: rgb(241, 239, 239);
+}
+
+.day.this-month {
     background-color: rgb(201, 194, 194);
-    box-shadow:
-        -1px -1px #383838,
-        inset -1px -1px 0 0 #a3a19e;
+
 }
 
 .day.today {
@@ -37,6 +37,7 @@ main {
 
 main>header {
     display: flex;
+    align-items: baseline;
 
     h1 {
         flex-grow: 1;
@@ -48,7 +49,8 @@ main>header {
         flex-grow: 1;
         flex-shrink: 1;
         flex-basis: 0;
-        align-content: center;
+        align-self: flex-end;
+        margin: auto;
 
         a {
             border-width: 1px;

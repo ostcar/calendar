@@ -30,7 +30,12 @@ func run() error {
 		return fmt.Errorf("loading timezone: %w", err)
 	}
 
-	model := model.New(location)
+	events, err := model.LoadEvents()
+	if err != nil {
+		return fmt.Errorf("load events: %w", err)
+	}
+
+	model := model.New(location, events)
 
 	if err := web.Run(ctx, serverAddr, model); err != nil {
 		return fmt.Errorf("running http server: %w", err)

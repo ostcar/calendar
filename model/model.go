@@ -8,12 +8,19 @@ import (
 // Model holds the global data for the calendar.
 type Model struct {
 	location *time.Location
+	events   map[string][]Event
 }
 
 // New initializes a model.
-func New(location *time.Location) *Model {
+func New(location *time.Location, events []Event) *Model {
+	eventMap := make(map[string][]Event, len(events))
+	for _, e := range events {
+		attr := dayAttr(e.start)
+		eventMap[attr] = append(eventMap[attr], e)
+	}
 	return &Model{
 		location: location,
+		events:   eventMap,
 	}
 }
 
@@ -170,6 +177,20 @@ func (d Day) IsToday() bool {
 	return yearA == yearB && monthA == monthB && dayA == dayB
 }
 
+// InMonth tells, if the day is in the monath.
+func (d Day) InMonth(month Month) bool {
+	return month.month == d.time.Month()
+}
+
+func dayAttr(t time.Time) string {
+	return t.Format("2006-01-02")
+}
+
+// Events returns all events for that day.
+func (d Day) Events() []Event {
+	return d.model.events[dayAttr(d.time)]
+}
+
 func germanMonth(m time.Month) string {
 	switch m {
 	case time.January:
@@ -200,6 +221,10 @@ func germanMonth(m time.Month) string {
 	panic(fmt.Sprintf("Invalid Month %s. I hope Go introduces enums.", m))
 }
 
+// Event is shown in a day.
 type Event struct {
-	start time.Time
+	id       string
+	start    time.Time
+	Title    string
+	Subtitle string
 }

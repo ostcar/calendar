@@ -12,25 +12,29 @@ templ Month(month model.Month) {
 			<section class="month">
 				// TODO: Add Mo, Di, Mi ...
 				for _, w := range month.Weeks() {
-					@week(w)
+					@week(month, w)
 				}
 			</section>
 		</main>
 	}
 }
 
-templ week(week model.Week) {
+templ week(month model.Month, week model.Week) {
 	<div class="week">
 		for _, d := range week.Days() {
-			@day(d)
+			@day(month, d)
 		}
 	</div>
 }
 
-templ day(day model.Day) {
-	<div class={ "day", templ.KV("today", day.IsToday()) }>
+templ day(month model.Month,day model.Day) {
+	<div class={ "day", templ.KV("today", day.IsToday()), templ.KV("this-month", day.InMonth(month)) }>
 		<header>{ strconv.Itoa(day.Number()) }</header>
-		<section></section>
+		<section>
+			for _, e := range day.Events() {
+				<div>{ e.Title }</div>
+			}
+		</section>
 	</div>
 }
 
