@@ -1,5 +1,46 @@
 package template
 
-templ Month() {
-	<main></main>
+import (
+	"strconv"
+	"github.com/ostcar/calendar/model"
+)
+
+templ Month(month model.Month) {
+	@layout() {
+		<main>
+			@header(month)
+			<section class="month">
+				// TODO: Add Mo, Di, Mi ...
+				for _, w := range month.Weeks() {
+					@week(w)
+				}
+			</section>
+		</main>
+	}
+}
+
+templ week(week model.Week) {
+	<div class="week">
+		for _, d := range week.Days() {
+			@day(d)
+		}
+	</div>
+}
+
+templ day(day model.Day) {
+	<div class={ "day", templ.KV("today", day.IsToday()) }>
+		<header>{ strconv.Itoa(day.Number()) }</header>
+		<section></section>
+	</div>
+}
+
+templ header(month model.Month) {
+	<header>
+		<h1>{ month.Name() }</h1>
+		<div class="controls">
+			<a href="/">Heute</a>
+			<a href={ templ.SafeURL("/?month=" + month.Previous().Attr()) }>↩</a>
+			<a href={ templ.SafeURL("/?month=" + month.Next().Attr()) }>↪</a>
+		</div>
+	</header>
 }

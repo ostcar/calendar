@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/ostcar/calendar/model"
 	"github.com/ostcar/calendar/web"
@@ -23,7 +24,13 @@ func run() error {
 	ctx, cancel := interruptContext()
 	defer cancel()
 
-	model := model.New()
+	// TODO: Maybe load location from request and let the model work with utc?
+	location, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		return fmt.Errorf("loading timezone: %w", err)
+	}
+
+	model := model.New(location)
 
 	if err := web.Run(ctx, serverAddr, model); err != nil {
 		return fmt.Errorf("running http server: %w", err)

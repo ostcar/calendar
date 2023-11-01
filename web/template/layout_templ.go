@@ -31,7 +31,7 @@ func layout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"icon\" href=\"data:,\"><link rel=\"stylesheet\" href=\"/style.css\"><script src=\"/assets/htmx.js\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"icon\" href=\"data:,\"><link rel=\"stylesheet\" href=\"/assets/style.css\"><script src=\"/assets/htmx.js\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

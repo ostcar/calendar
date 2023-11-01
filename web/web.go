@@ -70,10 +70,20 @@ func (s *server) registerHandlers() {
 	router.PathPrefix("/assets").Handler(handleStatic())
 
 	router.Handle("/", handleError(s.handleHome))
+
+	s.Handler = router
 }
 
 func (s server) handleHome(w http.ResponseWriter, r *http.Request) error {
-	return template.Month().Render(r.Context(), w)
+	month := s.model.ThisMonth()
+	if attr := r.URL.Query().Get("month"); attr != "" {
+		var err error
+		month, err = s.model.MonthFromAttr(attr)
+		if err != nil {
+			return err
+		}
+	}
+	return template.Month(month).Render(r.Context(), w)
 }
 
 func handleStatic() http.Handler {
